@@ -18,33 +18,46 @@ namespace AlgoLib.Merging
             var enums = (from n in sortedSources
                          select n.GetEnumerator()).ToArray();
 
-            //2. fetch enumerators that have at least one value
-            var enumsWithValues = (from n in enums
-                                   where n.MoveNext()
-                                   select n).ToArray();
-            //nothing to iterate over
-            if (enumsWithValues.Length == 0) yield break; 
+            //2. create index list indicating what MoveNext returned for each enumerator
+            var enumHasValue = new List<bool>(enums.Length);
+            // MoveNext on all and initialize enumHasValue
+            for (int i = 0; i < enums.Length; i++)
+            {
+                enumHasValue.Add(enums[i].MoveNext());
+            }
 
-            //3. sort by current value in List<IEnumerator<T>>
-            var enumsByCurrent = (from n in enumsWithValues
-                                  orderby n.Current
-                                  select n).ToList();
-            //4. loop through
+            // if all false, nothing to iterate over
+            if (enumHasValue.All(x => !x)) yield break;
+
+            //3. loop through
             while (true)
             {
-                //yield up the lowest value
-                yield return enumsByCurrent[0].Current;
-
-                //move the pointer on the enumerator with that lowest value
-                if (!enumsByCurrent[0].MoveNext())
+                //find index with lowest value
+                var lowIdx = -1;
+                T lowVal = default(T);
+                for (int i = 0; i < enums.Length; i++)
                 {
-                    //remove the first item in the list
-                    enumsByCurrent.RemoveAt(0);
-
-                    //check for empty
-                    if (enumsByCurrent.Count == 0) break; //we're done
+                    if (enumHasValue[i])
+                    {
+                        // must get first before doing any compares
+                        if (lowIdx < 0 
+                            || null == enums[i].Current //null sorts lowest
+                            || enums[i].Current.CompareTo(lowVal) < 0)
+                        {
+                            lowIdx = i;
+                            lowVal = enums[i].Current;
+                        }
+                    }
                 }
-                enumsByCurrent = enumsByCurrent.OrderBy(x => x.Current).ToList();
+
+                //if none found, we're done
+                if (lowIdx < 0) break;
+
+                //get next value for enumerator chosen
+                enumHasValue[lowIdx] = enums[lowIdx].MoveNext();
+
+                //yield up the lowest value
+                yield return lowVal;
             }
         }
     }
