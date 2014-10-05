@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AlgoLib.Merging
 {
-    public static partial class Merger
+    public static class Merger
     {
         public static IEnumerable<T> SortedMerge<T>
             (params IEnumerable<T>[] sortedSources)

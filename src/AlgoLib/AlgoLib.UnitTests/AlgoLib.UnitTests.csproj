@@ -55,9 +55,12 @@
   <ItemGroup>
     <Compile Include="MergeSortTestData.cs" />
     <Compile Include="Merging\SortedMergeTests.cs" />
+    <Compile Include="Sorting\HeapSortTests.cs" />
     <Compile Include="Sorting\InsertionSortTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MergeSortTests.cs" />
+    <Compile Include="Structures\HeapTests.cs" />
+    <Compile Include="Structures\PriorityQueueTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlgoLib\AlgoLib.csproj">

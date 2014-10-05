@@ -4,11 +4,12 @@ using System.Collections.Generic;
 namespace AlgoLib.Sorting
 {
     /// <summary>
-    /// The insertion sort is easy and fast for smaller sets of data.
+    /// Sorter supplies classic sorting algorithms.
     /// </summary>
     public static partial class Sorter
     {
         /// <summary>
+        /// The insertion sort is easy and fast for smaller sets of data.
         /// Simple insertion sort of IList or array in place.
         /// </summary>
         /// <typeparam name="T">Type to be sorted.</typeparam>
