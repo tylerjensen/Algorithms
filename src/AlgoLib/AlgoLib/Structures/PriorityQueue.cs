@@ -26,7 +26,8 @@ namespace AlgoLib.Structures
 
         public PriorityQueue(IEnumerable<T> data, PriorityOrder order)
         {
-            _data = new List<T>(data);
+            _data = data as IList<T>;
+            if (_data == null) _data = new List<T>(data);
             _order = order;
             _heapSize = _data.Count;
             if (_order == PriorityOrder.Max)
@@ -108,6 +109,11 @@ namespace AlgoLib.Structures
         public int Count
         {
             get { return _heapSize; }
+        }
+
+        public int Size
+        {
+            get { return _data.Count; }
         }
 
         public bool IsSynchronized
