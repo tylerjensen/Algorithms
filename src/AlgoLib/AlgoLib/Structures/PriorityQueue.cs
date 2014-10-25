@@ -67,9 +67,9 @@ namespace AlgoLib.Structures
         public void Enqueue(T item, T minItem, T maxItem)
         {
             if (_order == PriorityOrder.Max)
-                Heap.MaxInsert(_data, item, maxItem, _heapSize++);
+                Heap.MaxInsert(_data, item, minItem, _heapSize++);
             else
-                Heap.MinInsert(_data, item, minItem, _heapSize++);
+                Heap.MinInsert(_data, item, maxItem, _heapSize++);
         }
 
         public T Peek()

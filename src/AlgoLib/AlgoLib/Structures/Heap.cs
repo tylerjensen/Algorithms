@@ -179,7 +179,7 @@ namespace AlgoLib.Structures
 
         public static void MaxIncrease<T>(IList<T> data, int index, T item) where T : IComparable
         {
-            if (null == item || item.CompareTo(data[index]) > 0) 
+            if (null == item || item.CompareTo(data[index]) < 0) 
                 throw new ArgumentException("new item is smaller than the current item", "item");
 
             data[index] = item;
@@ -199,7 +199,7 @@ namespace AlgoLib.Structures
 
         public static void MinDecrease<T>(IList<T> data, int index, T item) where T : IComparable
         {
-            if (null == item || item.CompareTo(data[index]) < 0)
+            if (null == item || item.CompareTo(data[index]) > 0)
                 throw new ArgumentException("new item is greater than the current item", "item");
 
             data[index] = item;
@@ -229,8 +229,8 @@ namespace AlgoLib.Structures
             where T : IComparable
         {
             heapSize++;
-            if (heapSize < data.Count)
-                data[heapSize] = minOfT;
+            if (heapSize - 1 < data.Count)
+                data[heapSize - 1] = minOfT;
             else
                 data.Add(minOfT);
             MaxIncrease(data, heapSize - 1, item);
@@ -248,8 +248,8 @@ namespace AlgoLib.Structures
             where T : IComparable
         {
             heapSize++;
-            if (heapSize < data.Count)
-                data[heapSize] = maxOfT;
+            if (heapSize - 1 < data.Count)
+                data[heapSize - 1] = maxOfT;
             else
                 data.Add(maxOfT);
             MinDecrease(data, heapSize - 1, item);

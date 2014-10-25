@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using AlgoLib.Structures;
+using System.Threading;
 
 namespace AlgoLib.UnitTests.Structures
 {
@@ -85,6 +86,66 @@ namespace AlgoLib.UnitTests.Structures
             val = queue.Peek();
             Assert.IsTrue(val == 101);
             Assert.IsTrue(queue.Count == 8);
+        }
+
+        [TestMethod]
+        public void EnqueueMaxMinTest()
+        {
+            // from 45, 25, 4, 88, 96, 18, 101, 7
+            //   to 101, 96, 45, 88, 25, 18, 4, 7
+            IList<int> data = new List<int> { 45, 25, 4, 88, 96, 18, 101, 7 };
+            var queue = new PriorityQueue<int>(data, PriorityOrder.Max);
+            queue.Enqueue(2, int.MinValue, int.MaxValue);
+            Assert.IsTrue(queue.Count == 9);
+            var val = queue.Dequeue();
+            Assert.IsTrue(val == 101);
+            Assert.IsTrue(queue.Count == 8);
+            val = queue.Peek();
+            Assert.IsTrue(val == 96);
+            Assert.IsTrue(queue.Count == 8);
+        }
+
+        [TestMethod]
+        public void EnqueueMinMaxTest()
+        {
+            // from 45, 25, 4, 88, 96, 18, 101, 7
+            //   to 101, 96, 45, 88, 25, 18, 4, 7
+            IList<int> data = new List<int> { 45, 25, 4, 88, 96, 18, 101, 7 };
+            var queue = new PriorityQueue<int>(data, PriorityOrder.Min);
+            queue.Enqueue(2322, int.MinValue, int.MaxValue);
+            Assert.IsTrue(queue.Count == 9);
+            var val = queue.Dequeue();
+            Assert.IsTrue(val == 4);
+            Assert.IsTrue(queue.Count == 8);
+            val = queue.Peek();
+            Assert.IsTrue(val == 7);
+            Assert.IsTrue(queue.Count == 8);
+        }
+
+
+        [TestMethod]
+        public void DateTimeTest()
+        {
+            var rnd = new Random();
+            var queue = new PriorityQueue<DateTime>(PriorityOrder.Min);
+            for (int i = 0; i < 100; i++)
+            {
+                var ms = rnd.Next(20, 2000);
+                Thread.Sleep(ms);
+                var offset = rnd.Next(5, 10) - 10;
+                var dt = DateTime.Now.AddSeconds(offset);
+
+                var peek = (queue.Count > 0) ? queue.Peek() : DateTime.MinValue;
+
+                if (dt > peek)
+                    queue.Enqueue(dt, DateTime.MinValue, DateTime.MaxValue);
+
+                if (queue.Count > 20)
+                {
+                    var dq = queue.Dequeue();
+                    Assert.IsTrue(dq <= dt);
+                }
+            }
         }
 
         [TestMethod]
